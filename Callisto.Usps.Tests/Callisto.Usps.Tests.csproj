@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Callisto.Usps\Callisto.Usps.csproj" />
-    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
