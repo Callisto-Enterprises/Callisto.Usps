@@ -5,7 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageId>Callisto.Usps</PackageId>
-		<VersionPrefix>1.0.0</VersionPrefix>
+		<VersionPrefix>1.0.1</VersionPrefix>
 		<Authors></Authors>
 		<Company>Callisto Enterprises</Company>
 		<Product>Usps C# Bridge</Product>

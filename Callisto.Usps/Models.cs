@@ -39,12 +39,16 @@ namespace Callisto.Usps
 
         public Error? Error { get; set; }
 
+        // USPS API returns Address2 in Address1. This method will swap them.
         public void Transpile()
         {
-            if (Address2 is not null && Address1 is null)
+            if (!string.IsNullOrEmpty(Address2))
             {
-                Address1 = Address2;
-                Address2 = null;
+                var line1 = Address2;
+                var line2 = Address1;
+
+                Address1 = line1;
+                Address2 = line2;
             }
         }
     }
