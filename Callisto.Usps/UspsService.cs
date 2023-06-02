@@ -1,6 +1,7 @@
 using System.Xml.Serialization;
 using System.Xml;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Callisto.Usps
 {
@@ -8,8 +9,9 @@ namespace Callisto.Usps
     {
         private readonly string Username;
         private readonly HttpClient _httpClient;
+        private readonly ILogger<UspsService> _logger;
 
-        public UspsService(HttpClient httpClient, IConfiguration configuration)
+        public UspsService(HttpClient httpClient, IConfiguration configuration, ILogger<UspsService> logger)
         {
             httpClient.BaseAddress ??= new Uri("https://secure.shippingapis.com");
             _httpClient = httpClient;
@@ -20,6 +22,8 @@ namespace Callisto.Usps
             }
 
             Username = username;
+
+            _logger = logger;
         }
 
         public async Task<UspsAddressValidationResult> ValidateAddressAsync(Address address)
@@ -43,6 +47,9 @@ namespace Callisto.Usps
 
             // Read the response content as an XML document
             string responseContent = await response.Content.ReadAsStringAsync();
+
+            _logger.LogInformation("Raw Response:\n{responseContent}", responseContent);
+
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(responseContent);
 

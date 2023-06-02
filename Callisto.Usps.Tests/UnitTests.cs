@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using Xunit.Abstractions;
 
@@ -15,8 +16,10 @@ namespace Callisto.Usps.Tests
             var configuration = new ConfigurationBuilder().AddUserSecrets<UnitTests>().Build();
             var httpClient = new HttpClient();
 
-            _uspsService = new UspsService(httpClient, configuration);
             _output = output;
+
+            ILogger<UspsService> logger = _output.BuildLoggerFor<UspsService>();
+            _uspsService = new UspsService(httpClient, configuration, logger);
         }
 
         [Fact]
