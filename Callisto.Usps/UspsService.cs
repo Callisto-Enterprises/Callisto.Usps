@@ -1,4 +1,4 @@
-﻿using System.Xml.Serialization;
+using System.Xml.Serialization;
 using System.Xml;
 using Microsoft.Extensions.Configuration;
 
@@ -15,6 +15,10 @@ namespace Callisto.Usps
             _httpClient = httpClient;
 
             var username = configuration["Usps:Username"];
+            if (string.IsNullOrEmpty(username)) {
+                throw new ArgumentException("Usps:Username cannot be null or empty", nameof(username));
+            }
+
             Username = username;
         }
 
