@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using System.Xml;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -35,7 +35,7 @@ namespace Callisto.Usps
             };
 
             var serializer = new XmlSerializer(typeof(AddressValidationRequest));
-            var stringWriter = new StringWriter();
+            var stringWriter = new StringWriterWithEncoding(System.Text.Encoding.GetEncoding("ISO-8859-1"));
             serializer.Serialize(stringWriter, request);
             string xmlRequest = stringWriter.ToString();
 
