@@ -53,10 +53,10 @@ namespace Callisto.Usps
         }
     }
 
-    public sealed class Error
+    public class Error
     {
         [XmlElement("Number")]
-        public int Number { get; set; }
+        public string? Number { get; set; }
 
         [XmlElement("Source")]
         public string? Source { get; set; }
@@ -77,6 +77,12 @@ namespace Callisto.Usps
     {
         [XmlElement("Address")]
         public Address Address { get; set; } = null!;
+    }
+
+    // The root element of the USPS Address Validation API response for Errors
+    [XmlRoot("Error")]
+    public sealed class AddressValidationErrorResponse : Error
+    {
     }
 
     public sealed class UspsAddressValidationResult

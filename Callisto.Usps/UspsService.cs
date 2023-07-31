@@ -53,9 +53,23 @@ namespace Callisto.Usps
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(responseContent);
 
+            var typeToUse = xmlDoc.DocumentElement?.Name switch
+            {
+                "Error" => typeof(AddressValidationErrorResponse),
+                "AddressValidateResponse" => typeof(AddressValidationResponse),
+                _ => throw new NotSupportedException($"{xmlDoc.DocumentElement?.Name} not supported")
+            };
+
             // Deserialize the API response object from XML
-            var responseSerializer = new XmlSerializer(typeof(AddressValidationResponse));
+            var responseSerializer = new XmlSerializer(typeToUse);
             using var stringReader = new StringReader(xmlDoc.InnerXml);
+
+            if (typeToUse == typeof(AddressValidationErrorResponse))
+            {
+                var errorResponse = (AddressValidationErrorResponse?)responseSerializer.Deserialize(stringReader);
+                return new(false, errorResponse, null);
+            }
+
             var validationResponse = (AddressValidationResponse?)responseSerializer.Deserialize(stringReader);
 
             if (validationResponse is null)
